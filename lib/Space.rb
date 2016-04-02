@@ -1,14 +1,20 @@
 class Space
-    attr_reader :spaces_to_move
-    attr_accessor :type
+    # declare instance variables
+    @type
+    @spaces_to_move
 
+    # set access scope for instance variables
+    attr_reader :type, :spaces_to_move
+
+    # initialize the Space object
     def initialize
         @type           = 'normal'
         @spaces_to_move = 0
     end
 
-    def setType type
-        # make sure passed type is in allowed types list
+    # transform the Space into a different type (snake or ladder)
+    def transform type
+        # ensure type is allowed
         case type
         when 'snake', 'ladder'
             @type           = type
