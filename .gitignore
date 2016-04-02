@@ -1,1 +1,5 @@
+# Ruby
 coverage/
+
+# Vagrant
+/.vagrant
