@@ -1,12 +1,13 @@
 require File.dirname(__FILE__) + '/user'
+require File.dirname(__FILE__) + '/space'
 
 class SnakesLadders
   def initialize num_players
     @num_players = num_players
     @players = []
     @spaces = []
-    @finished? = false
-    
+    @finished = false
+
     create_players
     create_spaces
   end
@@ -16,11 +17,28 @@ class SnakesLadders
   end
 
   def run
-    while !self.finished?
+    while !@finished
       @players.each do |p|
         puts "Player #{p.name} enter roll"
         roll = gets.chomp.to_i
 
+        p.move(roll)
+
+        puts "Roll: #{roll}"
+        puts "Space Type: #{@spaces[p.position - 1].type}"
+        puts "Spaces to Move: #{@spaces[p.position - 1].spaces_to_move}"
+
+        if (@spaces[p.position - 1].type == 'snake')
+            p.move_back(@spaces[p.position - 1].spaces_to_move)
+        elsif (@spaces[p.position - 1].type == 'ladder')
+            p.move(@spaces[p.position - 1].spaces_to_move)
+        end
+
+        puts "Stats: "
+
+        @players.each do |pl|
+            puts "#{pl.name}: #{pl.position}"
+        end
       end
     end
   end
@@ -50,16 +68,18 @@ class SnakesLadders
           end
 
           @spaces[space_index].type = 'snake'
+          puts "Snake: #{space_index + 1}"
 
           while (@spaces[space_index].type != 'normal')
               space_index = get_random_space
           end
 
           @spaces[space_index].type = 'ladder'
+          puts "Ladder: #{space_index + 1}"
       end
   end
 
   def get_random_space
-      (10..90).rand
+      rand(10..90)
   end
 end
