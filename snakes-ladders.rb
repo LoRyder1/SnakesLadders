@@ -7,3 +7,5 @@ puts "How many players?(1-4)"
 num_players = gets.chomp.to_i
 
 game = SnakesLadders.new(num_players)
+
+game.run

@@ -1,7 +1,8 @@
 class User
-  attr_reader :current_space
-  def initialize
+  attr_reader :current_space, :name
+  def initialize name
     @current_space = 0
+    @name = name
   end
 
   def move num_of_spaces
