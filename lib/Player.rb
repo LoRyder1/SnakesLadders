@@ -1,4 +1,4 @@
-class User
+class Player
   attr_reader :position, :name
   def initialize name
     @position = 0

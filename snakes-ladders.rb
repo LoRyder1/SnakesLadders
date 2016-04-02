@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/lib/snakesladders'
+require File.dirname(__FILE__) + '/lib/SnakesLadders'
 
 puts "Hello Welcome to the Snakes and Ladders Game"
 

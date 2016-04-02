@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/user'
-require File.dirname(__FILE__) + '/space'
+require File.dirname(__FILE__) + '/Player'
+require File.dirname(__FILE__) + '/Space'
 
 class SnakesLadders
   def initialize num_players
