@@ -67,14 +67,14 @@ class SnakesLadders
               space_index = get_random_space
           end
 
-          @spaces[space_index].type = 'snake'
+          @spaces[space_index].setType('snake')
           puts "Snake: #{space_index + 1}"
 
           while (@spaces[space_index].type != 'normal')
               space_index = get_random_space
           end
 
-          @spaces[space_index].type = 'ladder'
+          @spaces[space_index].setType('ladder')
           puts "Ladder: #{space_index + 1}"
       end
   end
