@@ -56,7 +56,7 @@ class SnakesLadders
   def create_players
     @num_players.times do |x|
       puts "Player #{x+1} Enter Name:"
-      player = User.new(gets.chomp)
+      player = Player.new(gets.chomp)
       @players << player
     end
   end
