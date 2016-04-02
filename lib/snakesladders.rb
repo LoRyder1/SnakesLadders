@@ -12,10 +12,6 @@ class SnakesLadders
     create_spaces
   end
 
-  def roll
-
-  end
-
   def run
     while !@finished
       @players.each do |p|
