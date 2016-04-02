@@ -22,6 +22,11 @@ class SnakesLadders
         puts "Player #{p.name} enter roll"
         roll = gets.chomp.to_i
 
+        while (roll < 1 || roll > 6)
+            puts "Invalid roll! Try again."
+            roll = gets.chomp.to_i
+        end
+
         p.move(roll)
 
         puts "Roll: #{roll}"
@@ -39,8 +44,16 @@ class SnakesLadders
         @players.each do |pl|
             puts "#{pl.name}: #{pl.position}"
         end
+
+        if (p.position == 100)
+            puts "#{p.name} wins!"
+            @finished = true
+            break;
+        end
       end
     end
+
+    puts "Game over!"
   end
 
   private
