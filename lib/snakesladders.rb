@@ -7,10 +7,10 @@ class SnakesLadders
     num_players.times do |x|
       @players << User.new
     end
-    
+
   end
 
-  def method_name
+  def roll
     
   end
 end
