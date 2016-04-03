@@ -66,6 +66,7 @@ class SnakesLadders
                     puts ""
                 end
 
+                # check to see if the player has won the game
                 if (player.position == @spaces.length)
                     puts ""
                     puts "#{player.name} Wins!"
