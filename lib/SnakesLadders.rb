@@ -17,11 +17,6 @@ class SnakesLadders
         init_players(number_of_players, number_of_spaces)
         # private helper method to initialize the creation of spaces
         init_spaces(number_of_spaces, number_of_ladders, number_of_snakes)
-        @spaces.each_with_index do |x, index|
-          if x.type == 'snake' || x.type == 'ladder'
-            puts "#{index}, #{x.type}"
-          end
-        end
     end
 
     def run
@@ -33,7 +28,7 @@ class SnakesLadders
                 roll = gets.chomp.to_i
 
                 # make sure the roll is valid
-                while (roll < 1 || roll > 99)
+                while (roll < 1 || roll > 6)
                     puts "Invalid Roll! Please try that again:"
 
                     roll = gets.chomp.to_i
@@ -46,23 +41,28 @@ class SnakesLadders
                 space = @spaces[player.position - 1];
 
                 # check to see if the space is a ladder or a snake, and act accordingly
-                
                 if (space.type == 'ladder')
-                    output_snakeladder_msg(space, 'ladder', 'forward')
+                    puts ""
+                    puts "You landed on a ladder! You get to move forward #{space.spaces_to_move} spaces!"
+                    puts ""
+
                     player.move(space.spaces_to_move)
                 elsif (space.type == 'snake')
-                    output_snakeladder_msg(space, 'snake', 'back')
+                    puts ""
+                    puts "You landed on a snake! You have to move back #{space.spaces_to_move} spaces!"
+                    puts ""
+
                     player.move_back(space.spaces_to_move)
                 end
-
+                
                 report_player_stats
 
                 # check to see if the player has won the game
                 if (player.position == @spaces.length)
-                    puts (<<-WIN)
-                        #{player.name} Wins!
-                    
-                    WIN
+                    puts ""
+                    puts "#{player.name} Wins!"
+                    puts ""
+
                     @is_finished = true
                     break
                 end
@@ -70,18 +70,11 @@ class SnakesLadders
         end
 
         # end the game
-        puts (<<-END)
-            Game Over!
+        puts ""
+        puts "Game Over!"
+        puts ""
 
-        END
         exit
-    end
-
-    def output_snakeladder_msg space, item, direction
-        puts (<<-SNAKELADDER)
-              You landed on a #{item}! You get to move #{direction} #{space.spaces_to_move} spaces!
-
-        SNAKELADDER
     end
 
     def report_player_stats
