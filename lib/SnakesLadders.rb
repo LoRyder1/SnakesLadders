@@ -21,43 +21,68 @@ class SnakesLadders
 
     def run
         while !@is_finished
-            @players.each do |p|
-                puts "Player #{p.name} enter roll"
+            @players.each do |player|
+                puts "Enter #{player.name}'s Roll: "
+
+                # get the player's roll
                 roll = gets.chomp.to_i
 
+                # make sure the roll is valid
                 while (roll < 1 || roll > 6)
-                    puts "Invalid roll! Try again."
+                    puts "Invalid Roll! Please try that again:"
+
                     roll = gets.chomp.to_i
                 end
 
-                p.move(roll)
+                # the roll is valid! move the player
+                player.move(roll)
 
-                puts "Roll: #{roll}"
-                puts "Space Type: #{@spaces[p.position - 1].type}"
-                puts "Spaces to Move: #{@spaces[p.position - 1].spaces_to_move}"
+                # create a local copy of the Space the player landed on
+                space = @spaces[player.position - 1];
 
-                if (@spaces[p.position - 1].type == 'snake')
-                    p.move_back(@spaces[p.position - 1].spaces_to_move)
-                elsif (@spaces[p.position - 1].type == 'ladder')
-                    p.move(@spaces[p.position - 1].spaces_to_move)
+                # check to see if the space is a ladder or a snake, and act accordingly
+                if (space.type == 'ladder')
+                    puts ""
+                    puts "You landed on a ladder! You get to move forward #{space.spaces_to_move} spaces!"
+                    puts ""
+
+                    player.move(space.spaces_to_move)
+                elsif (space.type == 'snake')
+                    puts ""
+                    puts "You landed on a snake! You have to move back #{space.spaces_to_move} spaces!"
+                    puts ""
+
+                    player.move_back(space.spaces_to_move)
                 end
 
+                # report the current stats for each player
+                puts ""
                 puts "Stats: "
+                puts ""
 
                 @players.each do |pl|
-                    puts "#{pl.name}: #{pl.position}"
+                    puts "Player:   #{pl.name}"
+                    puts "Position: #{pl.position}"
+                    puts ""
                 end
 
-                if (p.position == 100)
-                    puts "#{p.name} wins!"
-                    @is_finished = true
+                if (player.position == @spaces.length)
+                    puts ""
+                    puts "#{player.name} Wins!"
+                    puts ""
 
+                    @is_finished = true
                     break
                 end
             end
         end
 
-        puts "Game over!"
+        # end the game
+        puts ""
+        puts "Game Over!"
+        puts ""
+
+        exit
     end
 
     # all methods following this declaration are private
