@@ -2,6 +2,10 @@ require File.dirname(__FILE__) + '/Player'
 require File.dirname(__FILE__) + '/Space'
 
 class SnakesLadders
+    # declare instance variables
+    @players
+    @spaces
+    @is_finished
 
     # initialize game
     def initialize number_of_players, number_of_spaces = 100, number_of_ladders = 5, number_of_snakes = 5
@@ -16,6 +20,11 @@ class SnakesLadders
         init_players(number_of_players, number_of_spaces)
         # private helper method to initialize the creation of spaces
         init_spaces(number_of_spaces, number_of_ladders, number_of_snakes)
+        @spaces.each_with_index do |x, index|
+          if x.type == 'snake' || x.type == 'ladder'
+            puts "#{index}, #{x.type}"
+          end
+        end
     end
 
     def run
@@ -71,7 +80,7 @@ class SnakesLadders
         # get player roll
         @current_roll = gets.chomp.to_i
 
-        while (@current_roll < 1 || @current_roll > 6)
+        while (@current_roll < 1 || @current_roll > 99)
             puts "Invalid Roll! Please try that again:"
             @current_roll = gets.chomp.to_i
         end
