@@ -15,11 +15,12 @@ class Space
     # transform the Space into a different type (snake or ladder)
     def transform type
         # ensure type is allowed
-        @type = type
         case type
         when 'snake'
+            @type           = type
             @spaces_to_move = - rand(1..10)
         when 'ladder'
+            @type           = type
             @spaces_to_move = rand(1..10)
         end
     end
