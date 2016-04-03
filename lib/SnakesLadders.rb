@@ -12,7 +12,6 @@ class SnakesLadders
         @players     = []
         @spaces      = []
         @is_finished = false
-        @current_roll = 0
 
         # private helper method to initialize the creation of players
         init_players(number_of_players, number_of_spaces)
@@ -30,16 +29,24 @@ class SnakesLadders
             @players.each do |player|
                 puts "Enter #{player.name}'s Roll: "
 
-                validate_roll
+                # get the player's roll
+                roll = gets.chomp.to_i
+
+                # make sure the roll is valid
+                while (roll < 1 || roll > 99)
+                    puts "Invalid Roll! Please try that again:"
+
+                    roll = gets.chomp.to_i
+                end
 
                 # the roll is valid! move the player
-                player.move(@current_roll)
+                player.move(roll)
 
                 # create a local copy of the Space the player landed on
                 space = @spaces[player.position - 1];
 
                 # check to see if the space is a ladder or a snake, and act accordingly
-
+                
                 if (space.type == 'ladder')
                     output_snakeladder_msg(space, 'ladder', 'forward')
                     player.move(space.spaces_to_move)
@@ -68,16 +75,6 @@ class SnakesLadders
 
         END
         exit
-    end
-
-    def validate_roll
-        # get player roll
-        @current_roll = gets.chomp.to_i
-
-        while (@current_roll < 1 || @current_roll > 99)
-            puts "Invalid Roll! Please try that again:"
-            @current_roll = gets.chomp.to_i
-        end
     end
 
     def output_snakeladder_msg space, item, direction
