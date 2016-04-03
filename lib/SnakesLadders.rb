@@ -54,17 +54,8 @@ class SnakesLadders
 
                     player.move_back(space.spaces_to_move)
                 end
-
-                # report the current stats for each player
-                puts ""
-                puts "Stats: "
-                puts ""
-
-                @players.each do |pl|
-                    puts "Player:   #{pl.name}"
-                    puts "Position: #{pl.position}"
-                    puts ""
-                end
+                
+                report_player_stats
 
                 # check to see if the player has won the game
                 if (player.position == @spaces.length)
@@ -84,6 +75,19 @@ class SnakesLadders
         puts ""
 
         exit
+    end
+
+    def report_player_stats
+      # Use heredoc for multiline strings
+        @players.each do |pl|
+          puts (<<-MSG)
+            Stats:
+
+              Player:   #{pl.name}
+              Position: #{pl.position}
+
+          MSG
+        end
     end
 
     # all methods following this declaration are private
