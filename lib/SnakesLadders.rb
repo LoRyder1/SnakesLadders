@@ -2,12 +2,13 @@ require File.dirname(__FILE__) + '/Player'
 require File.dirname(__FILE__) + '/Space'
 
 class SnakesLadders
+    # declare instance variables
     @players
     @spaces
     @is_finished
 
     # initialize game
-    def initialize number_of_players
+    def initialize number_of_players, number_of_spaces = 100, number_of_ladders = 5, number_of_snakes = 5
         @players     = []
         @spaces      = []
         @is_finished = false
@@ -15,7 +16,7 @@ class SnakesLadders
         # private helper method to initialize the creation of players
         init_players(number_of_players)
         # private helper method to initialize the creation of spaces
-        init_spaces
+        init_spaces(number_of_spaces, number_of_ladders, number_of_snakes)
     end
 
     def run
@@ -63,8 +64,20 @@ class SnakesLadders
     private
 
     # helper method to return a random Space object in our list
-    def get_random_space
-        rand(10..90)
+    def get_random_space min, max, must_be_normal = true
+        # the index of the random space
+        si = rand(min..max)
+
+        # check whether or not the space needs to be 'normal'
+        if must_be_normal
+            # if so, make sure the selected Space is 'normal'
+            while (@spaces[si].type != 'normal')
+                si = rand(min..max)
+            end
+        end
+
+        # explicity return the selected Space object
+        return @spaces[si]
     end
 
     # helper method to initialize the players list (for use in the constructor)
@@ -78,38 +91,29 @@ class SnakesLadders
     end
 
     # helper method to initialize the spaces list (for use in the constructor)
-    def init_spaces
-        # create the 100 game spaces
-        100.times do
+    def init_spaces number_of_spaces, number_of_ladders, number_of_snakes
+        # create game spaces
+        number_of_spaces.times do
             # stores each new Space object in our spaces list
             @spaces << Space.new()
         end
 
-        # create the 5 random snakes and 5 random ladders
-        5.times do
-            # the index of the Space to transform into a snake
-            si = get_random_space
-
-            # make sure the selected Space is a 'normal' type
-            while (@spaces[si].type != 'normal')
-                # if so, select a new Space to transform
-                si = get_random_space
-            end
-
-            # transform the selected Space into a snake
-            @spaces[si].transform('snake')
-
-            # the index of the Space to transform into a ladder
-            si = get_random_space
-
-            # make sure the selected Space is a 'normal' type
-            while (@spaces[si].type != 'normal')
-                # if so, select a new Space to transform
-                si = get_random_space
-            end
+        # create game ladders
+        number_of_ladders.times do
+            # get a random space
+            space = get_random_space(10, number_of_spaces - 10)
 
             # transform the selected Space into a ladder
-            @spaces[si].transform('ladder')
+            space.transform('ladder')
+        end
+
+        # create game snakes
+        number_of_snakes.times do
+            # get a random space
+            space = get_random_space(10, number_of_spaces - 10)
+
+            # transform the selected Space into a snake
+            space.transform('snake')
         end
     end
 end
