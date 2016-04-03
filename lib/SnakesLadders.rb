@@ -13,8 +13,6 @@ class SnakesLadders
         @spaces      = []
         @is_finished = false
         @current_roll = 0
-        @current_space = 0
-        @current_player = nil
 
         # private helper method to initialize the creation of players
         init_players(number_of_players, number_of_spaces)
@@ -31,17 +29,24 @@ class SnakesLadders
         while !@is_finished
             @players.each do |player|
                 puts "Enter #{player.name}'s Roll: "
-                @current_player = player
 
                 validate_roll
 
                 # the roll is valid! move the player
                 player.move(@current_roll)
 
-                # set instance var of the Space the player landed on
-                @current_space = @spaces[player.position - 1]
+                # create a local copy of the Space the player landed on
+                space = @spaces[player.position - 1];
 
-                interpret_space
+                # check to see if the space is a ladder or a snake, and act accordingly
+
+                if (space.type == 'ladder')
+                    output_snakeladder_msg(space, 'ladder', 'forward')
+                    player.move(space.spaces_to_move)
+                elsif (space.type == 'snake')
+                    output_snakeladder_msg(space, 'snake', 'back')
+                    player.move_back(space.spaces_to_move)
+                end
 
                 report_player_stats
 
@@ -65,17 +70,6 @@ class SnakesLadders
         exit
     end
 
-    def interpret_space
-        # check to see if the space is a ladder or a snake, and act accordingly
-        if (@current_space.type == 'ladder')
-            output_snakeladder_msg('ladder', 'forward')
-            @current_player.move(@current_space.spaces_to_move)
-        elsif (@current_space.type == 'snake')
-            output_snakeladder_msg('snake', 'back')
-            @current_player.move(@current_space.spaces_to_move)
-        end      
-    end
-
     def validate_roll
         # get player roll
         @current_roll = gets.chomp.to_i
@@ -86,9 +80,9 @@ class SnakesLadders
         end
     end
 
-    def output_snakeladder_msg item, direction
+    def output_snakeladder_msg space, item, direction
         puts (<<-SNAKELADDER)
-              You landed on a #{item}! You get to move #{direction} #{@current_space.spaces_to_move} spaces!
+              You landed on a #{item}! You get to move #{direction} #{space.spaces_to_move} spaces!
 
         SNAKELADDER
     end
