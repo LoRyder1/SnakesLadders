@@ -1,8 +1,4 @@
 class Space
-    # declare instance variables
-    @type
-    @spaces_to_move
-
     # set access scope for instance variables
     attr_reader :type, :spaces_to_move
 
