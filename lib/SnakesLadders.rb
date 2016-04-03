@@ -14,7 +14,7 @@ class SnakesLadders
         @is_finished = false
 
         # private helper method to initialize the creation of players
-        init_players(number_of_players)
+        init_players(number_of_players, number_of_spaces)
         # private helper method to initialize the creation of spaces
         init_spaces(number_of_spaces, number_of_ladders, number_of_snakes)
     end
@@ -107,12 +107,12 @@ class SnakesLadders
     end
 
     # helper method to initialize the players list (for use in the constructor)
-    def init_players number_of_players
+    def init_players number_of_players, max_position
         number_of_players.times do |i|
             puts "Player #{i + 1} Name: "
 
             # stores the new Player object in our players list
-            @players << Player.new(gets.chomp)
+            @players << Player.new(gets.chomp, max_position)
         end
     end
 
