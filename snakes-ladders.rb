@@ -1,11 +1,7 @@
 require File.dirname(__FILE__) + '/lib/SnakesLadders'
 
-puts "Hello Welcome to the Snakes and Ladders Game"
+puts "Hello! Welcome to the wonderful game of Snakes and Ladders!"
+puts "How many players will there be?"
 
-puts "How many players?(1-4)"
-
-num_players = gets.chomp.to_i
-
-game = SnakesLadders.new(num_players)
-
-game.run
+game = SnakesLadders.new(gets.chomp.to_i)
+game.run()
