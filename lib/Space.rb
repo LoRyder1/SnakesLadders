@@ -1,8 +1,4 @@
 class Space
-    # declare instance variables
-    @type
-    @spaces_to_move
-
     # set access scope for instance variables
     attr_reader :type, :spaces_to_move
 
@@ -15,9 +11,11 @@ class Space
     # transform the Space into a different type (snake or ladder)
     def transform type
         # ensure type is allowed
+        @type = type
         case type
-        when 'snake', 'ladder'
-            @type           = type
+        when 'snake'
+            @spaces_to_move = - rand(1..10)
+        when 'ladder'
             @spaces_to_move = rand(1..10)
         end
     end

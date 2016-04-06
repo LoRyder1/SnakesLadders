@@ -2,16 +2,15 @@ require File.dirname(__FILE__) + '/Player'
 require File.dirname(__FILE__) + '/Space'
 
 class SnakesLadders
-    # declare instance variables
-    @players
-    @spaces
-    @is_finished
 
     # initialize game
     def initialize number_of_players, number_of_spaces = 100, number_of_ladders = 5, number_of_snakes = 5
         @players     = []
         @spaces      = []
         @is_finished = false
+        @current_roll = 0
+        @current_space = 0
+        @current_player = nil
 
         # private helper method to initialize the creation of players
         init_players(number_of_players, number_of_spaces)
@@ -23,46 +22,26 @@ class SnakesLadders
         while !@is_finished
             @players.each do |player|
                 puts "Enter #{player.name}'s Roll: "
+                @current_player = player
 
-                # get the player's roll
-                roll = gets.chomp.to_i
-
-                # make sure the roll is valid
-                while (roll < 1 || roll > 6)
-                    puts "Invalid Roll! Please try that again:"
-
-                    roll = gets.chomp.to_i
-                end
+                validate_roll
 
                 # the roll is valid! move the player
-                player.move(roll)
+                player.move(@current_roll)
 
-                # create a local copy of the Space the player landed on
-                space = @spaces[player.position - 1];
+                # set instance var of the Space the player landed on
+                @current_space = @spaces[player.position - 1]
 
-                # check to see if the space is a ladder or a snake, and act accordingly
-                if (space.type == 'ladder')
-                    puts ""
-                    puts "You landed on a ladder! You get to move forward #{space.spaces_to_move} spaces!"
-                    puts ""
+                interpret_space
 
-                    player.move(space.spaces_to_move)
-                elsif (space.type == 'snake')
-                    puts ""
-                    puts "You landed on a snake! You have to move back #{space.spaces_to_move} spaces!"
-                    puts ""
-
-                    player.move_back(space.spaces_to_move)
-                end
-                
                 report_player_stats
 
                 # check to see if the player has won the game
                 if (player.position == @spaces.length)
-                    puts ""
-                    puts "#{player.name} Wins!"
-                    puts ""
-
+                    puts (<<-WIN)
+                        #{player.name} Wins!
+                    
+                    WIN
                     @is_finished = true
                     break
                 end
@@ -70,11 +49,39 @@ class SnakesLadders
         end
 
         # end the game
-        puts ""
-        puts "Game Over!"
-        puts ""
+        puts (<<-END)
+            Game Over!
 
+        END
         exit
+    end
+
+    def interpret_space
+        # check to see if the space is a ladder or a snake, and act accordingly
+        if (@current_space.type == 'ladder')
+            output_snakeladder_msg('ladder', 'forward')
+            @current_player.move(@current_space.spaces_to_move)
+        elsif (@current_space.type == 'snake')
+            output_snakeladder_msg('snake', 'back')
+            @current_player.move(@current_space.spaces_to_move)
+        end      
+    end
+
+    def validate_roll
+        # get player roll
+        @current_roll = gets.chomp.to_i
+
+        while (@current_roll < 1 || @current_roll > 6)
+            puts "Invalid Roll! Please try that again:"
+            @current_roll = gets.chomp.to_i
+        end
+    end
+
+    def output_snakeladder_msg item, direction
+        puts (<<-SNAKELADDER)
+              You landed on a #{item}! You get to move #{direction} #{@current_space.spaces_to_move} spaces!
+
+        SNAKELADDER
     end
 
     def report_player_stats
